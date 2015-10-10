@@ -1,29 +1,47 @@
-/*eslint-env node*/
+    /*eslint-env node*/
 
-//------------------------------------------------------------------------------
-// node.js starter application for Bluemix
-//------------------------------------------------------------------------------
+    //------------------------------------------------------------------------------
+    // node.js starter application for Bluemix
+    //------------------------------------------------------------------------------
 
-// This application uses express as its web server
-// for more info, see: http://expressjs.com
-var express = require('express');
+    // This application uses express as its web server
+    // for more info, see: http://expressjs.com
+    var express = require('express');
+    var pg = require('pg');
 
-// cfenv provides access to your Cloud Foundry environment
-// for more info, see: https://www.npmjs.com/package/cfenv
-var cfenv = require('cfenv');
+    //var sqlCredential = require('./sqlCred.js');
 
-// create a new express server
-var app = express();
 
-// serve the files out of ./public as our main files
-app.use(express.static(__dirname + '/public'));
+    var conString = "postgres://fvetluzo:ej3cURbi-96Ohta3Fpg2CSf-zQyVJ4a6@jumbo.db.elephantsql.com:5432/fvetluzo";
+ 
+    //connection.connect("db2://user08356:gHjONBSEsHLG@75.126.155.153:50000/SQLDB")
 
-// get the app environment from Cloud Foundry
-var appEnv = cfenv.getAppEnv();
+    var client = new pg.Client(conString);
+    client.connect(function(err) {
+    if(err) {
+        return console.error('could not connect to postgres', err);
+    }  
+    });
 
-// start server on the specified port and binding host
-app.listen(appEnv.port, function() {
+    // cfenv provides access to your Cloud Foundry environment
+    // for more info, see: https://www.npmjs.com/package/cfenv
+    //var cfenv = require('cfenv');
 
-	// print a message when the server starts listening
-  console.log("server starting on " + appEnv.url);
-});
+    // create a new express server
+    var app = express();
+
+    
+    // serve the files out of ./public as our main files
+    app.use(express.static(__dirname + '/public'));
+
+    // get the app environment from Cloud Foundry
+    //var appEnv = cfenv.getAppEnv();
+    app.listen(3000);
+
+
+    // start server on the specified port and binding host
+    //app.listen(appEnv.port, function() {
+    //
+    //	// print a message when the server starts listening
+    //  console.log("server starting on " + appEnv.url);
+    //});
