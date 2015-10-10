@@ -1,18 +1,10 @@
-    /*eslint-env node*/
-
-    //------------------------------------------------------------------------------
-    // node.js starter application for Bluemix
-    //------------------------------------------------------------------------------
-
-    // This application uses express as its web server
-    // for more info, see: http://expressjs.com
-    var express = require('express');
     var pg = require('pg');
+    var url = require('url');
+    var express = require('express');
+    var mongojs = require('mongojs');
     var stormpath = require('express-stormpath');
-
-    var mongojs = require('mongojs')
     
-    var db = mongojs("var db = mongojs('username:password@example.com/mydb", ['Requests']);
+    var db = mongojs("mongodb://portal:portal1@ds035674.mongolab.com:35674/hackathondb", ['Requests'], { authMechanism : 'ScramSHA1'});
 
     // cfenv provides access to your Cloud Foundry environment
     // for more info, see: https://www.npmjs.com/package/cfenv
@@ -42,10 +34,50 @@
     //});
 
 
-    app.get('/path', function(req, res) {
-    var is_ajax_request = req.xhr;
-    console.log("ajax test");
-        res.send("send compelte");
+    app.get('/request/genre', function(req, res) {
+
+        var data = url.parse(req.url);
+
+        db.Requests.find( { "genre" : data["genre"] } , function(err, docs) {
+
+            if(err){
+
+                console.log(err);
+                res.write("Error.");
+                res.end();
+
+            } else {
+
+                console.log(docs);
+                res.write(JSON.stringify(docs));
+                res.end();
+
+            }
+
+        });
+
+    });
+
+    app.get('/request/all', function(req, res) {
+
+        db.Requests.find( {} , function(err, docs) {
+
+            if(err){
+
+                console.log(err);
+                res.write("Error.");
+                res.end();
+
+            } else {
+
+                console.log(docs);
+                res.write(JSON.stringify(docs));
+                res.end();
+
+            }
+
+        });
+
     });
 
     // start server on the specified port and binding host
