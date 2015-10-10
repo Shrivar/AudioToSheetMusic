@@ -8,20 +8,11 @@
     // for more info, see: http://expressjs.com
     var express = require('express');
     var pg = require('pg');
+    var stormpath = require('express-stormpath');
 
-    //var sqlCredential = require('./sqlCred.js');
-
-
-    var conString = "postgres://fvetluzo:ej3cURbi-96Ohta3Fpg2CSf-zQyVJ4a6@jumbo.db.elephantsql.com:5432/fvetluzo";
- 
-    //connection.connect("db2://user08356:gHjONBSEsHLG@75.126.155.153:50000/SQLDB")
-
-    var client = new pg.Client(conString);
-    client.connect(function(err) {
-    if(err) {
-        return console.error('could not connect to postgres', err);
-    }  
-    });
+    var mongojs = require('mongojs')
+    
+    var db = mongojs("var db = mongojs('username:password@example.com/mydb", ['Requests']);
 
     // cfenv provides access to your Cloud Foundry environment
     // for more info, see: https://www.npmjs.com/package/cfenv
@@ -30,14 +21,32 @@
     // create a new express server
     var app = express();
 
-    
+//    var stormpathMiddleware = stormpath.init(app, {
+//      apiKeyFile: '/Users/shriv/Documents/Hackathon/HackathonAppTranscriber/apiKey.properties',
+//      application: 'https://api.stormpath.com/v1/accounts/2etgaz8j8E9PqBRAUXEYo2',
+//      secretKey: 'T2NVglGDiABcKWEwGlUz',
+//      expandCustomData: true,
+//      enableForgotPassword: true
+//    });
+
     // serve the files out of ./public as our main files
     app.use(express.static(__dirname + '/public'));
 
+    
+
+
     // get the app environment from Cloud Foundry
     //var appEnv = cfenv.getAppEnv();
-    app.listen(3000);
+    //app.on('stormpath.ready', function() {
+        app.listen(3000);
+    //});
 
+
+    app.get('/path', function(req, res) {
+    var is_ajax_request = req.xhr;
+    console.log("ajax test");
+        res.send("send compelte");
+    });
 
     // start server on the specified port and binding host
     //app.listen(appEnv.port, function() {

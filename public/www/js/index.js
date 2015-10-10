@@ -25,5 +25,12 @@ $(document).ready(function() {
 	$("#genreToggle").on('change', toggleGenre);
 
 	toggleGenre();
-
+    
+    
+    $.ajax({
+        type:"GET",
+        url:"/path"
+    }).done(function(data){
+        alert(data);
+    });
 });
