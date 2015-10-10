@@ -2,6 +2,7 @@
     var url = require('url');
     var express = require('express');
     var mongojs = require('mongojs');
+    var querystring = require('querystring');
     var stormpath = require('express-stormpath');
     
     var db = mongojs("mongodb://portal:portal1@ds035674.mongolab.com:35674/hackathondb", ['Requests'], { authMechanism : 'ScramSHA1'});
@@ -36,7 +37,8 @@
 
     app.get('/request/genre', function(req, res) {
 
-        var data = url.parse(req.url);
+        var parsedURL = url.parse(req.url);
+        var data = querystring.parse(parsedURL.query);
 
         db.Requests.find( { "genre" : data["genre"] } , function(err, docs) {
 
@@ -48,7 +50,6 @@
 
             } else {
 
-                console.log(docs);
                 res.write(JSON.stringify(docs));
                 res.end();
 
@@ -70,7 +71,6 @@
 
             } else {
 
-                console.log(docs);
                 res.write(JSON.stringify(docs));
                 res.end();
 

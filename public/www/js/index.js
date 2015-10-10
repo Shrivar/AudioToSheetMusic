@@ -1,8 +1,4 @@
-var all;
-var classical;
-var jazz;
-var rock;
-var country;
+var requests = [];
 var data;
 
 $(document).ready(function() {
@@ -15,8 +11,7 @@ $(document).ready(function() {
 			url: "/request/all",
 		})
 		.done(function(resp){
-			data = JSON.parse(resp);
-			all = JSON.parse(resp);
+			requests["all"] = JSON.parse(resp);
 			toggleGenre();
 		})
 		.fail(function(resp){
@@ -31,7 +26,7 @@ $(document).ready(function() {
 			data: {"genre" : "classical"},
 		})
 		.done(function(resp){
-			classical = JSON.parse(resp);
+			requests["classical"] = JSON.parse(resp);
 		})
 		.fail(function(resp){
 			alert(resp);
@@ -45,7 +40,7 @@ $(document).ready(function() {
 			data: {"genre" : "jazz"},
 		})
 		.done(function(resp){
-			jazz = JSON.parse(resp);
+			requests["jazz"] = JSON.parse(resp);
 		})
 		.fail(function(resp){
 			alert(resp);
@@ -59,7 +54,7 @@ $(document).ready(function() {
 			data: {"genre" : "rock"},
 		})
 		.done(function(resp){
-			rock = JSON.parse(resp);
+			requests["rock"] = JSON.parse(resp);
 		})
 		.fail(function(resp){
 			alert(resp);
@@ -73,7 +68,7 @@ $(document).ready(function() {
 			data: {"genre" : "country"},
 		})
 		.done(function(resp){
-			country = JSON.parse(resp);
+			requests["country"] = JSON.parse(resp);
 		})
 		.fail(function(resp){
 			alert(resp);
@@ -82,18 +77,19 @@ $(document).ready(function() {
 
 });
 
-data = [{id: 1, rating:426, link:"https://www.youtube.com/watch?v=Hwxhwa8dgqk", vote: 0}, {id: 2, rating:-119, link:"https://youtube.com", vote: 0}];
-
 function toggleGenre(){
 
 	genre = $("#genreToggle").val();
+
+	data = requests[genre];
+
 	$("#topHeader").html("Top Sheets: " + genre);
 	$("#newHeader").html("New Sheets: " + genre);
 
 	topTableBody = $("#topTableBody");
 	topTableBody.html("");
 
-	for(i = 0; i < data.length; i++){
+	for(var key in data){
 
 		tr = $(document.createElement("tr"));
 
@@ -113,15 +109,15 @@ function toggleGenre(){
 
 		td = $(document.createElement("td"));
 		td.attr({
-			id: "rating" + data[i]["id"],
+			id: "rating" + data["id"],
 		})
-		td.html(data[i]["rating"]);
+		td.html(data["rating"]);
 		tr.append(td);
 
 		td = $(document.createElement("td"));
 		a = $(document.createElement("a"));
 		a.attr({
-			href: "/request/" + data[i]["id"],
+			href: "/request/" + data["id"],
 		})
 		a.html("Link");
 		td.append(a);
@@ -130,7 +126,7 @@ function toggleGenre(){
 		td = $(document.createElement("td"));
 		a = $(document.createElement("a"));
 		a.attr({
-			href: data[i]["link"],
+			href: data["link"],
 		})
 		a.html("Link");
 		td.append(a);
@@ -138,8 +134,8 @@ function toggleGenre(){
 
 		topTableBody.append(tr);
 
-		span1.click({param1: data[i]["id"]}, voteUp);
-		span2.click({param1: data[i]["id"]}, voteDown);
+		span1.click({param1: data["id"]}, voteUp);
+		span2.click({param1: data["id"]}, voteDown);
 
 	}
 
