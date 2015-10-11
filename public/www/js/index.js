@@ -15,7 +15,7 @@ $(document).ready(function() {
 			toggleGenre();
 		})
 		.fail(function(resp){
-			alert(resp);
+			//alert(resp);
 		});
 	}, 500);
 
@@ -43,7 +43,7 @@ $(document).ready(function() {
 			requests["Jazz"] = JSON.parse(resp);
 		})
 		.fail(function(resp){
-			alert(resp);
+			//alert(resp);
 		});
 	}, 500);
 
@@ -57,7 +57,7 @@ $(document).ready(function() {
 			requests["Rock"] = JSON.parse(resp);
 		})
 		.fail(function(resp){
-			alert(resp);
+			//alert(resp);
 		});
 	}, 500);
 
@@ -71,7 +71,7 @@ $(document).ready(function() {
 			requests["Country"] = JSON.parse(resp);
 		})
 		.fail(function(resp){
-			alert(resp);
+			//alert(resp);
 		});
 	}, 500);
 

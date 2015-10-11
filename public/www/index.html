@@ -10,6 +10,7 @@
 		<script src="js/index.js"></script>
 		<link rel="stylesheet" type="text/css" href="bootstrap/css/bootstrap.min.css">
 		<link rel="stylesheet" type="text/css" href="bootstrap/css/bootstrap-theme.min.css">
+		<link rel="stylesheet" type="text/css" href="stylesheets/index.css">
 	</head>
 	<body>
 
@@ -41,14 +42,16 @@
 					</div>
 				</div>
 			</nav>
-
-			<select id="genreToggle" class="form-control" style="width: 10%;">
-				<option value="All">All</option>
-				<option value="Classical">Classical</option>
-				<option value="Jazz">Jazz</option>
-				<option value="Rock">Rock</option>
-				<option value="Country">Country</option>
-			</select>
+			<div class="row">
+				<select id="genreToggle" class="form-control" style="width: 10%; float: left;">
+					<option value="All">All</option>
+					<option value="Classical">Classical</option>
+					<option value="Jazz">Jazz</option>
+					<option value="Rock">Rock</option>
+					<option value="Country">Country</option>
+				</select>
+				<a data-toggle="modal" href="#requestform" style="float: right;"" class="btn btn-primary">Submit Request</a>
+			</div>
 
 			<div class="container">
 				<div class="row">
@@ -70,6 +73,29 @@
 							</table>
 						</div>
 					</div>
+				</div>
+			</div>
+			
+			<div id="requestform" class="modal fade">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal">×</button>
+					<h2>Upload file</h2>
+				</div>
+				<div class="modal-body">
+					<form>
+					  <input type="radio" name="category" value="arrangement" checked>Arrangement
+					  <br>
+					  <input type="radio" name="category" value="melody">Melody
+					  <p>
+						Select a pdf file.
+					  </p>
+					  <input type="file" name="score">
+					</form>
+				 </div>
+				
+				<div class="modal-footer">
+					<div class="btn">Submit</div>
+					<a href="#" class="btn" data-dismiss="modal">Cancel</a>
 				</div>
 			</div>
 		</div>
