@@ -27,6 +27,7 @@ $(document).ready(function() {
 		.done(function(resp){
 
 			var data = JSON.parse(resp);
+            
 
 			var arrSelect = $("#arrangementsSelect");
 			arrSelect.html("");
@@ -38,11 +39,10 @@ $(document).ready(function() {
 			arrSelect.append(option);
 
 			for(var i = 0; i < data.length; i++){
-				option = $(document.createElement("option"));
+                option = $(document.createElement("option"));
 				option.attr({
 					value: data[i]["name"],
-					html: data[i]["name"],
-				});
+				}).text(data[i]["name"]);
 				arrSelect.append(option);
 			}
 
@@ -66,16 +66,15 @@ $(document).ready(function() {
 			melodySelect.html("");
 			option = $(document.createElement("option"));
 			option.attr({
-				value: "",
-				html: "",
-			});
+				value: data[i]["name"],
+            }).text(data[i]["name"]);
 			melodySelect.append(option);
 
 			for(var i = 0; i < data.length; i++){
 				option = $(document.createElement("option"));
 				option.attr({
 					value: data[i]["name"],
-					html: data[i]["name"],
+					text: data[i]["name"],
 				});
 				melodySelect.append(option);
 			}
@@ -92,7 +91,7 @@ $(document).ready(function() {
 		var val = select.val();
 
 		if(val != ""){
-			frame.src("/submissions?name=" + val);
+			frame.attr('src',"/submissions?name=" + val);
 		}
 
 	});
@@ -103,7 +102,7 @@ $(document).ready(function() {
 		var val = select.val();
 
 		if(val != ""){
-			frame.src("/submissions?name=" + val);
+			frame.attr('src',"/submissions?name=" + val);
 		}
 
 	});

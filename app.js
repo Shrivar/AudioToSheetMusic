@@ -167,7 +167,7 @@
 		var parsedURL = url.parse(req.url);
 		var data = querystring.parse(parsedURL.query);
 		
-		db2.Submissions.find( { reqid : data["reqid"] , type : "melody" }, function(err, docs){ 
+		db2.Submissions.find( { reqid : data["reqid"]} , {category : "melody" }, { name : 1}, function(err, docs){ 
 
 			if(err){
 
@@ -191,7 +191,7 @@
 		var parsedURL = url.parse(req.url);
 		var data = querystring.parse(parsedURL.query);
 		
-		db2.Submissions.find( { reqid : data["reqid"] , type : "arrangement" }, function(err, docs){ 
+		db2.Submissions.find( { reqid : data["reqid"],category : "arrangement" }, { name : 1}, function(err, docs){ 
 
 			if(err){
 
@@ -200,8 +200,9 @@
 				res.end();
 
 			} else {
-
-				res.write(JSON.stringify(docs));
+                
+				console.log(docs);
+                res.write(JSON.stringify(docs));
 				res.end();
 
 			}
@@ -217,7 +218,7 @@
             
         }
         db2.Submissions.insert(
-            { name: req.file.originalname ,data, category: req.body.category}, function(err, doc) {
+            { name: req.file.originalname , reqid:req.body.reqID,category: req.body.category,data}, function(err, doc) {
 
           if(err)
             console.log(err)
