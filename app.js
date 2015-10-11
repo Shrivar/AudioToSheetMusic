@@ -1,88 +1,208 @@
-    var pg = require('pg');
-    var url = require('url');
-    var express = require('express');
-    var mongojs = require('mongojs');
-    var querystring = require('querystring');
-    var stormpath = require('express-stormpath');
-    
-    var db = mongojs("mongodb://portal:portal1@ds035674.mongolab.com:35674/hackathondb", ['Requests'], { authMechanism : 'ScramSHA1'});
+	var pg = require('pg');
+	var url = require('url');
+	var ejs = require('ejs');
+	var express = require('express');
+	var mongojs = require('mongojs');
+	var ObjectId = require('mongojs').ObjectId;
+	var stormpath = require('express-stormpath');
+	var querystring = require('querystring');
+	
+	var db = mongojs("mongodb://portal:portal1@ds035674.mongolab.com:35674/hackathondb", ['Requests'], { authMechanism : 'ScramSHA1'});
+	var db2 = mongojs("mongodb://portal:portal1@ds035674.mongolab.com:35674/hackathondb", ['Submissions'], { authMechanism : 'ScramSHA1'});
 
-    // cfenv provides access to your Cloud Foundry environment
-    // for more info, see: https://www.npmjs.com/package/cfenv
-    //var cfenv = require('cfenv');
+	// cfenv provides access to your Cloud Foundry environment
+	// for more info, see: https://www.npmjs.com/package/cfenv
+	//var cfenv = require('cfenv');
 
-    // create a new express server
-    var app = express();
+	var app = express();
 
-//    var stormpathMiddleware = stormpath.init(app, {
-//      apiKeyFile: '/Users/shriv/Documents/Hackathon/HackathonAppTranscriber/apiKey.properties',
-//      application: 'https://api.stormpath.com/v1/accounts/2etgaz8j8E9PqBRAUXEYo2',
-//      secretKey: 'T2NVglGDiABcKWEwGlUz',
-//      expandCustomData: true,
-//      enableForgotPassword: true
-//    });
+	app.use(express.static(__dirname + '/views'));
+	app.set('views', __dirname + '/views');
+	app.set('view engine', 'ejs');
 
-    // serve the files out of ./public as our main files
-    app.use(express.static(__dirname + '/public'));
+	app.use(stormpath.init(app, {
+		website: true,
+		//application: "https://api.stormpath.com/v1/applications/1Of8X2O9jVwDvYHTFXMxWV",
+		//apiKeyFile: __dirname + "/apiKey.properties"
+	}));
 
-    
+	app.on('stormpath.ready', function() {
+		app.listen(3000);
+	});
 
+	app.post('/login', function(req, res){
 
-    // get the app environment from Cloud Foundry
-    //var appEnv = cfenv.getAppEnv();
-    //app.on('stormpath.ready', function() {
-        app.listen(3000);
-    //});
+		var parsedURL = url.parse(req.url);
+		var data = querystring.parse(parsedURL.query);
 
+		var username = data['username'];
+		var password = data['password'];
 
-    app.get('/request/genre', function(req, res) {
+		stormApp.authenticateAccount({
+			username: username,
+			password: password,
+		}, function (err, result) {
+			if (err) throw err;
+			account = result.account;
 
-        var parsedURL = url.parse(req.url);
-        var data = querystring.parse(parsedURL.query);
+		});
 
-        db.Requests.find( { "genre" : data["genre"] } , function(err, docs) {
+	});
 
-            if(err){
+	app.get('/account', function(req, res){
+		if(req.user){
+			res.render('account', { user: req.user });
+			res.end();
+		} else {
+			res.redirect('/login');
+		}
+	});
 
-                console.log(err);
-                res.write("Error.");
-                res.end();
+	app.get('/', function(req, res){
+		res.render('index');
+		res.end();
+	});
 
-            } else {
+	app.get('/request', function(req, res) {
 
-                res.write(JSON.stringify(docs));
-                res.end();
+		var parsedURL = url.parse(req.url);
+		var data = querystring.parse(parsedURL.query);
 
-            }
+		db.Requests.find( { "_id" : ObjectId(data["id"]) } , function(err, docs) {
 
-        });
+			if(err){
 
-    });
+				console.log(err);
+				res.write("Error.");
+				res.end();
 
-    app.get('/request/all', function(req, res) {
+			} else {
 
-        db.Requests.find( {} , function(err, docs) {
+				if(docs){
 
-            if(err){
+					res.render('request', { request : docs });
+					res.end();
 
-                console.log(err);
-                res.write("Error.");
-                res.end();
+				} else {
 
-            } else {
+					res.write("Error.");
+					res.end();
 
-                res.write(JSON.stringify(docs));
-                res.end();
+				}
 
-            }
+			}
 
-        });
+		});
 
-    });
+	});
 
-    // start server on the specified port and binding host
-    //app.listen(appEnv.port, function() {
-    //
-    //	// print a message when the server starts listening
-    //  console.log("server starting on " + appEnv.url);
-    //});
+	app.get('/request/genre', function(req, res) {
+
+		var parsedURL = url.parse(req.url);
+		var data = querystring.parse(parsedURL.query);
+
+		db.Requests.find( { "genre" : data["genre"] } , function(err, docs) {
+
+			if(err){
+
+				console.log(err);
+				res.write("Error.");
+				res.end();
+
+			} else {
+
+				res.write(JSON.stringify(docs));
+				res.end();
+
+			}
+
+		});
+
+	});
+
+	app.get('/request/all', function(req, res) {
+
+		db.Requests.find( {} , function(err, docs) {
+
+			if(err){
+
+				console.log(err);
+				res.write("Error.");
+				res.end();
+
+			} else {
+
+				res.write(JSON.stringify(docs));
+				res.end();
+
+			}
+
+		});
+
+	});
+
+	app.get('/submissions', function(req, res){
+
+		var parsedURL = url.parse(req.url);
+		var data = querystring.parse(parsedURL.query);
+	
+		db2.Submissions.findOne( { name : data["name"] }, function(err, doc){            
+			
+			var pdf = new Buffer(doc.data, "base64");
+
+			res.set({
+				'Content-Type': 'application/pdf',
+			});
+			
+			res.send(pdf);
+		});
+
+	});
+
+	app.get('/submissions/melody/reqid', function(req, res){
+
+		var parsedURL = url.parse(req.url);
+		var data = querystring.parse(parsedURL.query);
+		
+		db2.Submissions.find( { reqid : data["reqid"] , type : "melody" }, function(err, docs){ 
+
+			if(err){
+
+				console.log(err);
+				res.write("Error.");
+				res.end();
+
+			} else {
+
+				res.write(JSON.stringify(docs));
+				res.end();
+
+			}
+
+		});
+
+	});
+
+	app.get('/submissions/arrangement/reqid', function(req, res){
+
+		var parsedURL = url.parse(req.url);
+		var data = querystring.parse(parsedURL.query);
+		
+		db2.Submissions.find( { reqid : data["reqid"] , type : "arrangement" }, function(err, docs){ 
+
+			if(err){
+
+				console.log(err);
+				res.write("Error.");
+				res.end();
+
+			} else {
+
+				res.write(JSON.stringify(docs));
+				res.end();
+
+			}
+
+		});
+
+	});
