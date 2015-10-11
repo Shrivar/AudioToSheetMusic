@@ -6,6 +6,9 @@
 	var ObjectId = require('mongojs').ObjectId;
 	var stormpath = require('express-stormpath');
 	var querystring = require('querystring');
+    var multer  = require('multer')
+    var upload = multer({ dest: 'uploads/'});
+    var fs = require('fs');
 	
 	var db = mongojs("mongodb://portal:portal1@ds035674.mongolab.com:35674/hackathondb", ['Requests'], { authMechanism : 'ScramSHA1'});
 	var db2 = mongojs("mongodb://portal:portal1@ds035674.mongolab.com:35674/hackathondb", ['Submissions'], { authMechanism : 'ScramSHA1'});
@@ -20,15 +23,15 @@
 	app.set('views', __dirname + '/views');
 	app.set('view engine', 'ejs');
 
-	app.use(stormpath.init(app, {
-		website: true,
-		//application: "https://api.stormpath.com/v1/applications/1Of8X2O9jVwDvYHTFXMxWV",
-		//apiKeyFile: __dirname + "/apiKey.properties"
-	}));
+//	app.use(stormpath.init(app, {
+//		website: true,
+//		applicationhref: "https://api.stormpath.com/v1/applications/1Of8X2O9jVwDvYHTFXMxWV",
+//		apiKeyFile: __dirname + "/apiKey.properties"
+	//}));
 
-	app.on('stormpath.ready', function() {
+	//app.on('stormpath.ready', function() {
 		app.listen(3000);
-	});
+	//});
 
 	app.post('/login', function(req, res){
 
@@ -206,3 +209,24 @@
 		});
 
 	});
+
+    app.post('/uploadPDF',upload.single('score'), function(req, res, next) {
+        fs.readFile(__dirname + "\\" + req.file.path , "base64", function read(err, data) {
+        if (err) {
+        throw err;
+            
+        }
+        db2.Submissions.insert(
+            { name: req.file.originalname ,data, category: req.body.category}, function(err, doc) {
+
+          if(err)
+            console.log(err)
+        
+  	     });  
+	  	
+            res.redirect("/");
+        });
+        
+    
+
+});

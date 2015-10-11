@@ -8,8 +8,10 @@
   "dependencies": {
     "cfenv": "1.0.x",
     "express": "4.12.x",
+    "fs": "0.0.2",
     "mongodb": "^2.0.45",
     "mongojs": "^1.4.0",
+    "multer": "^1.0.6",
     "pg": "^4.4.2"
   },
   "repository": {},

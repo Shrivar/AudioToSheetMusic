@@ -93,7 +93,7 @@
 							<h4 class="modal-title">Upload PDF Transcription</h4>
 						</div>
 						<div class="modal-body">
-							<form>
+							<form method="post" enctype="multipart/form-data" action="/uploadPDF">
 								<input type="radio" name="category" value="arrangement" checked>Arrangement
 								<br>
 								<input type="radio" name="category" value="melody">Melody
@@ -103,6 +103,7 @@
 									Select a PDF to upload
 								</p>
 								<input type="file" name="score">
+                                <input type="submit">
 							</form>
 						</div>
 						<div class="modal-footer">
