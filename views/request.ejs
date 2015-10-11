@@ -50,7 +50,7 @@
 			</nav>
 
 			<div style="position: relative;" id="upload">
-				<p><a data-toggle="modal" href="#uploadform" style="position: absolute; top: 0px; right: 0px;" type="button" class="btn btn-primary">Upload</a></p>
+				<p><a data-toggle="modal" href="#newRequest" style="position: absolute; top: 0px; right: 0px;" type="button" class="btn btn-primary">Upload</a></p>
 			</div>
 			<div class="row">
 				<div class="col-md-5" id="requestinfo">
@@ -81,6 +81,33 @@
 								<iframe src="" width="700" height="500" id="melodyFrame"></iframe>
 							</div>
 						</div> 
+					</div>
+				</div>
+			</div>
+
+			<div id="newRequest" class="modal fade" role="dialog">
+				<div class="modal-dialog">
+					<div class="modal-content">
+						<div class="modal-header">
+							<button type="button" class="close" data-dismiss="modal">&times;</button>
+							<h4 class="modal-title">Upload PDF Transcription</h4>
+						</div>
+						<div class="modal-body">
+							<form>
+								<input type="radio" name="category" value="arrangement" checked>Arrangement
+								<br>
+								<input type="radio" name="category" value="melody">Melody
+								<br>
+								<br>
+								<p>
+									Select a PDF to upload
+								</p>
+								<input type="file" name="score">
+							</form>
+						</div>
+						<div class="modal-footer">
+							<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+						</div>
 					</div>
 				</div>
 			</div>
