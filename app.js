@@ -191,7 +191,11 @@
 		var parsedURL = url.parse(req.url);
 		var data = querystring.parse(parsedURL.query);
 		
+<<<<<<< HEAD
 		db2.Submissions.find( { reqid : data["reqid"], category : "melody" }, { name : 1 }, function(err, docs){ 
+=======
+		db2.Submissions.find( { reqid : data["reqid"], category : "melody" }, { name : 1 }, function(err, docs){ 
+>>>>>>> 87bef565740b1a51cc2de71a077dc8a0722a81c9
 
 			if(err){
 

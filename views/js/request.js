@@ -92,14 +92,17 @@ $(document).ready(function() {
 		if(val != ""){
 			frame.attr('src',"/submissions?name=" + val);
 		}
+        
+        console.log(val);
 
 	});
 
 	$("#melodySelect").on('change', function(event){
 		var frame = $("#melodyFrame");
 		var select = $("#melodySelect");
+        
 		var val = select.val();
-
+        console.log(val);
 		if(val != ""){
 			frame.attr('src',"/submissions?name=" + val);
 		}
