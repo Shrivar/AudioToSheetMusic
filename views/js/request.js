@@ -74,8 +74,7 @@ $(document).ready(function() {
 				option = $(document.createElement("option"));
 				option.attr({
 					value: data[i]["name"],
-					text: data[i]["name"],
-				});
+				}).text(data[i]["name"]);
 				melodySelect.append(option);
 			}
 

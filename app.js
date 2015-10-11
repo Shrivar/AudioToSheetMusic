@@ -23,15 +23,15 @@
 	app.set('views', __dirname + '/views');
 	app.set('view engine', 'ejs');
 
-	app.use(stormpath.init(app, {
-		website: true,
-		applicationhref: "https://api.stormpath.com/v1/applications/1Of8X2O9jVwDvYHTFXMxWV",
-		apiKeyFile: __dirname + "/apiKey.properties"
-	}));
+	//app.use(stormpath.init(app, {
+//		website: true,
+//		applicationhref: "https://api.stormpath.com/v1/applications/1Of8X2O9jVwDvYHTFXMxWV",
+//		apiKeyFile: __dirname + "/apiKey.properties"
+//	}));
 
-	app.on('stormpath.ready', function() {
+	//app.on('stormpath.ready', function() {
 		app.listen(3000);
-	});
+	//});
 
 	app.post('/login', function(req, res){
 
@@ -201,7 +201,7 @@
 
 			} else {
                 
-				console.log(docs);
+				//console.log(docs);
                 res.write(JSON.stringify(docs));
 				res.end();
 
