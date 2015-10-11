@@ -11,6 +11,15 @@
 		<link rel="stylesheet" type="text/css" href="bootstrap/css/bootstrap.min.css">
 		<link rel="stylesheet" type="text/css" href="bootstrap/css/bootstrap-theme.min.css">
 		<link rel="stylesheet" type="text/css" href="stylesheets/request.css">
+		<style>
+			html { 
+				background: url(http://www.musicteachershelper.com/blog/wp-content/images/music-background-1.jpg) no-repeat center center fixed; 
+				-webkit-background-size: cover;
+				-moz-background-size: cover;
+				-o-background-size: cover;
+				background-size: cover;
+			}
+		</style>
 	</head>
 	<body>
 
@@ -97,14 +106,14 @@
 								<input type="radio" name="category" value="arrangement" checked>Arrangement
 								<br>
 								<input type="radio" name="category" value="melody">Melody
-                                <input type="hidden" name="reqID" value="<%- request[0]['_id']%>">
+								<input type="hidden" name="reqID" value="<%- request[0]['_id']%>">
 								<br>
 								<br>
 								<p>
 									Select a PDF to upload
 								</p>
 								<input type="file" name="score">
-                                <input type="submit">
+								<input type="submit">
 							</form>
 						</div>
 						<div class="modal-footer">
@@ -133,6 +142,5 @@
 			</script>
 			
 		</div>
-		<div class="navbar navbar-fixed-bottom"><p>HackNC 2015: Shrivar Ramlakan, Alex Solarski, Adam Wang</p></div>
 	</body>
 </html>

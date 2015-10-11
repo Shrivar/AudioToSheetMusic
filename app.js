@@ -6,9 +6,9 @@
 	var ObjectId = require('mongojs').ObjectId;
 	var stormpath = require('express-stormpath');
 	var querystring = require('querystring');
-    var multer  = require('multer')
-    var upload = multer({ dest: 'uploads/'});
-    var fs = require('fs');
+	var multer  = require('multer')
+	var upload = multer({ dest: 'uploads/'});
+	var fs = require('fs');
 	
 	var db = mongojs("mongodb://portal:portal1@ds035674.mongolab.com:35674/hackathondb", ['Requests'], { authMechanism : 'ScramSHA1'});
 	var db2 = mongojs("mongodb://portal:portal1@ds035674.mongolab.com:35674/hackathondb", ['Submissions'], { authMechanism : 'ScramSHA1'});
@@ -23,15 +23,15 @@
 	app.set('views', __dirname + '/views');
 	app.set('view engine', 'ejs');
 
-	//app.use(stormpath.init(app, {
-//		website: true,
-//		applicationhref: "https://api.stormpath.com/v1/applications/1Of8X2O9jVwDvYHTFXMxWV",
-//		apiKeyFile: __dirname + "/apiKey.properties"
-//	}));
+	app.use(stormpath.init(app, {
+		website: true,
+		applicationhref: "https://api.stormpath.com/v1/applications/1Of8X2O9jVwDvYHTFXMxWV",
+		apiKeyFile: __dirname + "/apiKey.properties"
+	}));
 
-	//app.on('stormpath.ready', function() {
+	app.on('stormpath.ready', function() {
 		app.listen(3000);
-	//});
+	});
 
 	app.post('/login', function(req, res){
 
@@ -92,6 +92,30 @@
 					res.end();
 
 				}
+
+			}
+
+		});
+
+	});
+
+	app.get('/request/mine', function(req, res) {
+
+		var parsedURL = url.parse(req.url);
+		var data = querystring.parse(parsedURL.query);
+
+		db.Requests.find( { "userid" : req.user.email } , function(err, docs) {
+
+			if(err){
+
+				console.log(err);
+				res.write("Error.");
+				res.end();
+
+			} else {
+
+				res.write(JSON.stringify(docs));
+				res.end();
 
 			}
 
@@ -167,7 +191,7 @@
 		var parsedURL = url.parse(req.url);
 		var data = querystring.parse(parsedURL.query);
 		
-		db2.Submissions.find( { reqid : data["reqid"]} , {category : "melody" }, { name : 1}, function(err, docs){ 
+		db2.Submissions.find( { reqid : data["reqid"], category : "melody" }, { name : 1 }, function(err, docs){ 
 
 			if(err){
 
@@ -191,7 +215,7 @@
 		var parsedURL = url.parse(req.url);
 		var data = querystring.parse(parsedURL.query);
 		
-		db2.Submissions.find( { reqid : data["reqid"],category : "arrangement" }, { name : 1}, function(err, docs){ 
+		db2.Submissions.find( { reqid : data["reqid"], category : "arrangement" }, { name : 1 }, function(err, docs){ 
 
 			if(err){
 
@@ -200,9 +224,8 @@
 				res.end();
 
 			} else {
-                
-				//console.log(docs);
-                res.write(JSON.stringify(docs));
+				
+				res.write(JSON.stringify(docs));
 				res.end();
 
 			}
@@ -211,23 +234,47 @@
 
 	});
 
-    app.post('/uploadPDF',upload.single('score'), function(req, res, next) {
-        fs.readFile(__dirname + "\\" + req.file.path , "base64", function read(err, data) {
-        if (err) {
-        throw err;
-            
-        }
-        db2.Submissions.insert(
-            { name: req.file.originalname , reqid:req.body.reqID,category: req.body.category,data}, function(err, doc) {
+	app.post('/uploadPDF',upload.single('score'), function(req, res, next) {
+		
+		fs.readFile(__dirname + "\\" + req.file.path , "base64", function read(err, data) {
+			if (err) {
+				throw err;
+			}
 
-          if(err)
-            console.log(err)
-        
-  	     });  
-	  	
-            res.redirect("/");
-        });
-        
-    
+			db2.Submissions.insert({ name: req.file.originalname , reqid:req.body.reqID, category: req.body.category, data}, function(err, doc) {
 
-});
+				if(err){
+					console.log(err)
+				}
+		
+			});  
+		
+			res.redirect("/");
+
+		});
+
+	});
+
+	app.post('/newRequest', function(req, res) {
+
+		var parsedURL = url.parse(req.url);
+		var data = querystring.parse(parsedURL.query);
+		
+		db.Requests.insert({ link : req.body.link , title : req.body.title, genre : req.body.genre, comment : req.body.comment , rating : 0 , userid : req.user.email }, function(err, doc) {
+
+			if(err){
+
+				console.log(err);
+				res.write("Error.");
+				res.end();
+
+			} else {
+				
+				res.redirect("/account");
+				res.end();
+
+			}
+		
+		});
+
+	});

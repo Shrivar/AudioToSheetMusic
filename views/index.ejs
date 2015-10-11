@@ -10,6 +10,15 @@
 		<script src="js/index.js"></script>
 		<link rel="stylesheet" type="text/css" href="bootstrap/css/bootstrap.min.css">
 		<link rel="stylesheet" type="text/css" href="bootstrap/css/bootstrap-theme.min.css">
+		<style>
+			html { 
+				background: url(http://www.musicteachershelper.com/blog/wp-content/images/music-background-1.jpg) no-repeat center center fixed; 
+				-webkit-background-size: cover;
+				-moz-background-size: cover;
+				-o-background-size: cover;
+				background-size: cover;
+			}
+		</style>
 	</head>
 	<body>
 
@@ -51,6 +60,7 @@
 				<option value="Jazz">Jazz</option>
 				<option value="Rock">Rock</option>
 				<option value="Country">Country</option>
+				<option value="Pop">Pop</option>
 			</select>
 
 			<div class="container">
@@ -59,7 +69,7 @@
 						<h2 style="text-align: center;" id="topHeader">Top Sheets: All</h2>
 						<div class="table-responsive" id="topDiv">
 							<table class="table" id="topTable">
-								<thead><th></th><th>Rating</th><th>Details</th><th>Video Link</th></thead>
+								<thead><th></th><th>Rating</th><th>Title</th><th>Details</th><th>Video Link</th><th>Comment</th></thead>
 								<tbody id="topTableBody"></tbody>
 							</table>
 						</div>
@@ -68,7 +78,7 @@
 						<h2 style="text-align: center;" id="newHeader">New Sheets: All</h2>
 						<div class="table-responsive" id="newDiv">
 							<table class="table" id="newTable">
-								<thead><th></th><th>Rating</th><th>Details</th><th>Video Link</th></thead>
+								<thead><th></th><th>Rating</th><th>Title</th><th>Details</th><th>Video Link</th><th>Comment</th></thead>
 								<tbody id="newTableBody"></tbody>
 							</table>
 						</div>
@@ -76,6 +86,5 @@
 				</div>
 			</div>
 		</div>
-		<div class="navbar navbar-fixed-bottom"><p>HackNC 2015: Shrivar Ramlakan, Alex Solarski, Adam Wang</p></div>
 	</body>
 </html>

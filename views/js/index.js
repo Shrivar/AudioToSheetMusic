@@ -6,7 +6,7 @@ $(document).ready(function() {
 	$("#genreToggle").on('change', toggleGenre);
 
 	setTimeout(function(){
-		requests["all"] = $.ajax({
+		$.ajax({
 			type: "GET",
 			url: "/request/all",
 		})
@@ -23,7 +23,7 @@ $(document).ready(function() {
 		$.ajax({
 			type: "GET",
 			url: "/request/genre",
-			data: {"genre" : "classical"},
+			data: {"genre" : "Classical"},
 		})
 		.done(function(resp){
 			requests["Classical"] = JSON.parse(resp);
@@ -37,7 +37,7 @@ $(document).ready(function() {
 		$.ajax({
 			type: "GET",
 			url: "/request/genre",
-			data: {"genre" : "jazz"},
+			data: {"genre" : "Jazz"},
 		})
 		.done(function(resp){
 			requests["Jazz"] = JSON.parse(resp);
@@ -51,7 +51,7 @@ $(document).ready(function() {
 		$.ajax({
 			type: "GET",
 			url: "/request/genre",
-			data: {"genre" : "rock"},
+			data: {"genre" : "Rock"},
 		})
 		.done(function(resp){
 			requests["Rock"] = JSON.parse(resp);
@@ -65,10 +65,24 @@ $(document).ready(function() {
 		$.ajax({
 			type: "GET",
 			url: "/request/genre",
-			data: {"genre" : "country"},
+			data: {"genre" : "Country"},
 		})
 		.done(function(resp){
 			requests["Country"] = JSON.parse(resp);
+		})
+		.fail(function(resp){
+			alert(resp);
+		});
+	}, 500);
+
+	setTimeout(function(){
+		$.ajax({
+			type: "GET",
+			url: "/request/genre",
+			data: {"genre" : "Pop"},
+		})
+		.done(function(resp){
+			requests["Pop"] = JSON.parse(resp);
 		})
 		.fail(function(resp){
 			alert(resp);
@@ -115,11 +129,15 @@ function toggleGenre(){
 		tr.append(td);
 
 		td = $(document.createElement("td"));
+		td.html(data[i]["title"]);
+		tr.append(td);
+
+		td = $(document.createElement("td"));
 		a = $(document.createElement("a"));
 		a.attr({
 			href: "/request?id=" + data[i]["_id"],
 		})
-		a.html("Link");
+		a.html("Details");
 		td.append(a);
 		tr.append(td);
 
@@ -132,7 +150,72 @@ function toggleGenre(){
 		td.append(a);
 		tr.append(td);
 
+		td = $(document.createElement("td"));
+		td.html(data[i]["comment"]);
+		tr.append(td);
+
 		topTableBody.append(tr);
+
+		span1.click({param1: data[i]["_id"]}, voteUp);
+		span2.click({param1: data[i]["_id"]}, voteDown);
+
+	}
+
+	newTableBody = $("#newTableBody");
+	newTableBody.html("");
+
+	for(var i = 0; i < data.length; i++){
+
+		tr = $(document.createElement("tr"));
+
+		td = $(document.createElement("td"));
+		span1 = $(document.createElement("span"));
+		span1.attr({
+			class: 'glyphicon glyphicon-arrow-up',
+		});
+		td.append(span1);
+
+		span2 = $(document.createElement("span"));
+		span2.attr({
+			class: 'glyphicon glyphicon-arrow-down',
+		});
+		td.append(span2);
+		tr.append(td);
+
+		td = $(document.createElement("td"));
+		td.attr({
+			id: "rating" + data[i]["_id"],
+		})
+		td.html(data[i]["rating"]);
+		tr.append(td);
+
+		td = $(document.createElement("td"));
+		td.html(data[i]["title"]);
+		tr.append(td);
+
+		td = $(document.createElement("td"));
+		a = $(document.createElement("a"));
+		a.attr({
+			href: "/request?id=" + data[i]["_id"],
+		})
+		a.html("Details");
+		td.append(a);
+		tr.append(td);
+
+		td = $(document.createElement("td"));
+		a = $(document.createElement("a"));
+		a.attr({
+			href: data[i]["link"],
+		})
+		a.html("Link");
+		td.append(a);
+		tr.append(td);
+
+		td = $(document.createElement("td"));
+		td.html(data[i]["comment"]);
+		tr.append(td);
+
+		newTableBody.append(tr);
 
 		span1.click({param1: data[i]["_id"]}, voteUp);
 		span2.click({param1: data[i]["_id"]}, voteDown);

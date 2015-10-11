@@ -66,8 +66,8 @@ $(document).ready(function() {
 			melodySelect.html("");
 			option = $(document.createElement("option"));
 			option.attr({
-				value: data[i]["name"],
-            }).text(data[i]["name"]);
+				value: "",
+            }).text("");
 			melodySelect.append(option);
 
 			for(var i = 0; i < data.length; i++){
@@ -95,7 +95,7 @@ $(document).ready(function() {
 
 	});
 
-	$("#melodysSelect").on('change', function(event){
+	$("#melodySelect").on('change', function(event){
 		var frame = $("#melodyFrame");
 		var select = $("#melodySelect");
 		var val = select.val();

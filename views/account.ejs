@@ -1,15 +1,27 @@
 <!DOCTYPE html>
 <html>
 	<head>
+		<script>
+			var user = JSON.parse('<%- JSON.stringify(user) %>');
+		</script>
 		<meta charset="utf-8">
 		<title>
 			Hackathon: Audio to Sheet Music
 		</title>
 		<script src="js/jquery-2.1.4.min.js"></script>
 		<script src="bootstrap/js/bootstrap.min.js"></script>
-		<script src="js/index.js"></script>
+		<script src="js/account.js"></script>
 		<link rel="stylesheet" type="text/css" href="bootstrap/css/bootstrap.min.css">
 		<link rel="stylesheet" type="text/css" href="bootstrap/css/bootstrap-theme.min.css">
+		<style>
+			html { 
+				background: url(http://www.musicteachershelper.com/blog/wp-content/images/music-background-1.jpg) no-repeat center center fixed; 
+				-webkit-background-size: cover;
+				-moz-background-size: cover;
+				-o-background-size: cover;
+				background-size: cover;
+			}
+		</style>
 	</head>
 	<body>
 
@@ -48,36 +60,53 @@
 			<h2 style="text-align: center;">Your transcription requests:</h2>
 			<table class="table table-responsive">
 				<thead>
-					<th>Details</th><th>Rating</th><th>Video Link</th>
+					<th>Title</th><th>Details</th><th>Rating</th><th>Video Link</th>
 				</thead>
 				<tbody id="tableBody">
 				</tbody>
 			</table>
 			<br>
 			<div style="margin: 0 auto; width: 10%">
-				<a data-toggle="modal" href="#newForm" type="button" class="btn btn-primary">New Transcription Request</a>
+				<a data-toggle="modal" href="#newRequest" type="button" class="btn btn-primary">New Transcription Request</a>
 			</div>
 		</div>
 
-		<div id="newForm" class="modal fade">
-			<div class="modal-header">
-				<button type="button" class="close" data-dismiss="modal">×</button>
-				<h2>Upload file</h2>
-			</div>
-			<div class="modal-body">
-				<form>
-					<input type="radio" name="category" value="arrangement" checked>Arrangement
-					<br>
-					<input type="radio" name="category" value="melody">Melody
-					<p>
-						Select a pdf file.
-					</p>
-					<input type="file" name="score">
-				</form>
+		<div id="newRequest" class="modal fade" role="dialog">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal">&times;</button>
+						<h4 class="modal-title">New Transcription Request</h4>
+					</div>
+					<div class="modal-body">
+						<form method="post" action="/newRequest">
+							<label for="title">Title/Name:</label>
+							<input type="text" id="title" name="title" placeholder="Smooth Jazz">
+							<br>
+							<br>
+							<label for="link">Video Link:</label>
+							<input type="text" id="link" name="link" placeholder="http://youtube.com/v/98321">
+							<br>
+							<br>
+							<label for="genre">Genre:</label>
+							<select id="genre" name="genre">
+								<option value="Classical">Classical</option>
+								<option value="Jazz">Jazz</option>
+								<option value="Rock">Rock</option>
+								<option value="Country">Country</option>
+								<option value="Pop">Pop</option>
+							</select>
+							<br>
+							<label for="comment">Comment (optional):</label>
+							<textarea name="comment" id="comment"></textarea>
+							<br>
+							<input type="submit" class="btn btn-default">
+						</form>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+					</div>
 				</div>
-			<div class="modal-footer">
-				<div class="btn">Submit</div>
-				<a href="#" class="btn" data-dismiss="modal">Cancel</a>
 			</div>
 		</div>
 

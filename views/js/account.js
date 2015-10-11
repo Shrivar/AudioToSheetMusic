@@ -3,7 +3,7 @@ var data;
 $(document).ready(function() {
 
 	setTimeout(function(){
-		requests["all"] = $.ajax({
+		$.ajax({
 			type: "GET",
 			url: "/request/mine",
 		})
@@ -20,8 +20,6 @@ $(document).ready(function() {
 
 function setupTable(){
 
-	alert("" + <%- user %> + "");
-
 	tableBody = $("#tableBody");
 
 	if(data){
@@ -29,6 +27,10 @@ function setupTable(){
 		for(var i = 0; i < data.length; i++){
 
 			tr = $(document.createElement("tr"));
+
+			td = $(document.createElement("td"));
+			td.html(data[i]["title"]);
+			tr.append(td);
 
 			td = $(document.createElement("td"));
 			a = $(document.createElement("a"));
